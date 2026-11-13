@@ -59,6 +59,8 @@ Deployed on Streamlit Community Cloud
 
 ## Results
 
+**Note:** the table below was produced before the CV-based protocol (see *Evaluation protocol*), when models were compared directly on the test split. Re-run `python src/train.py` and replace it with the numbers from `metrics.json`.
+
 | Model | Accuracy | F1 (churn class) | Precision | Recall | ROC-AUC |
 |---|---|---|---|---|---|
 | Logistic Regression (baseline) | 0.806 | 0.604 | 0.657 | 0.559 | **0.843** |
@@ -120,6 +122,13 @@ worked end-to-end without a hitch.
 - Local Docker Desktop/WSL2 environment issues prevented a fully verified local `docker build`
   during development — noting this rather than claiming a container image was tested end-to-end
   I didn't confirm.
+
+## Evaluation protocol
+
+Models are compared with 5-fold stratified cross-validation on the **train split only** (SMOTE is
+applied inside each training fold). The winner (by CV F1, or `--select-by recall`) is refit on the
+full train split and evaluated **once** on the held-out test split; those numbers are what
+`metrics.json` (tracked by DVC) and the MLflow `final_*` run report.
 
 ## Running locally
 
